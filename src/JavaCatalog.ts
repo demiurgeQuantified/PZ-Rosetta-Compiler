@@ -3,10 +3,10 @@
 import * as fs from 'fs';
 import { parse } from 'node-html-parser';
 import { JavaClass } from './JavaClass';
-import { JavaNamespace } from './JavaNamespace';
+import { JavaPackage } from './JavaPackage';
 
 export class JavaCatalog {
-    readonly namespaces: { [name: string]: JavaNamespace } = {};
+    readonly packages: { [name: string]: JavaPackage } = {};
 
     parse(path: string) {
         const html = fs.readFileSync(path).toString();
@@ -25,11 +25,11 @@ export class JavaCatalog {
             const uri = `./docs/${classURI}`;
             try {
                 const clazz = new JavaClass(uri);
-                const name = clazz.namespace;
-                if (!this.namespaces[name]) {
-                    this.namespaces[name] = new JavaNamespace(name);
+                const name = clazz.package;
+                if (!this.packages[name]) {
+                    this.packages[name] = new JavaPackage(name);
                 }
-                this.namespaces[name].addClass(clazz);
+                this.packages[name].addClass(clazz);
                 for (var nestedClass of clazz.nestedClasses) {
                     nestedClass = name.replaceAll(".", "/") + "/" + nestedClass + ".html"
                     if (!classList.includes(nestedClass)) {
@@ -50,10 +50,10 @@ export class JavaCatalog {
     }
 
     save(format: 'yml' | 'json') {
-        const keys = Object.keys(this.namespaces);
+        const keys = Object.keys(this.packages);
         keys.sort((a, b) => a.localeCompare(b));
         for (const key of keys) {
-            this.namespaces[key].save(format);
+            this.packages[key].save(format);
         }
     }
 }

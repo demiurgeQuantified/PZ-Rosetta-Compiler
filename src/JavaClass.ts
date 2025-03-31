@@ -14,7 +14,7 @@ export class JavaClass extends JavaElement {
     readonly methods: { [name: string]: JavaMethod[] } = {};
     readonly constructors: JavaConstructor[] = [];
 
-    readonly namespace: string;
+    readonly package: string;
     readonly name: string;
     readonly modifiers: string[] = [];
     readonly notes: string | undefined;
@@ -28,7 +28,7 @@ export class JavaClass extends JavaElement {
         const { element } = this;
 
         // Java Package
-        this.namespace = this.getText('.header > .sub-title > a')!;
+        this.package = this.getText('.header > .sub-title > a')!;
 
         // Java Type & Modifiers
         const split = this.getText('.type-signature > .modifiers')!.split(' ');
@@ -257,12 +257,12 @@ export class JavaClass extends JavaElement {
         let path = '';
         let text = '';
         if (format === 'yml') {
-            path = `dist/yml/${this.namespace.replace(/\./g, '/')}/`;
+            path = `dist/yml/${this.package.replace(/\./g, '/')}/`;
             text =
-                `# ${this.namespace}.${this.name}\n` +
+                `# ${this.package}.${this.name}\n` +
                 YAML.stringify(this.toJSONObject());
         } else {
-            path = `dist/json/${this.namespace.replace(/\./g, '/')}/`;
+            path = `dist/json/${this.package.replace(/\./g, '/')}/`;
             text = JSON.stringify(this.toJSONObject());
         }
 

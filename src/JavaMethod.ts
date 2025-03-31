@@ -4,14 +4,14 @@ import { HTMLElement } from 'node-html-parser';
 import { JavaElement } from './JavaElement';
 import { JavaParameter } from './JavaParameter';
 import { removeHtmlEncoding, splitParameters } from './Utils';
-import { JavaReturns } from './JavaReturns';
+import { JavaReturn } from './JavaReturn';
 import { JavaType } from './JavaType';
 
 export class JavaMethod extends JavaElement {
     readonly name: string;
     readonly modifiers: string[] = [];
     readonly parameters: JavaParameter[] = [];
-    readonly returns: JavaReturns;
+    readonly return: JavaReturn;
 
     readonly notes: string | undefined;
 
@@ -101,7 +101,7 @@ export class JavaMethod extends JavaElement {
             }
         }
 
-        this.returns = new JavaReturns(
+        this.return = new JavaReturn(
             new JavaType(returnType, returnTypeFull),
             returnNotes,
         );
@@ -119,7 +119,7 @@ export class JavaMethod extends JavaElement {
             parameters: this.parameters.length
                 ? this.parameters.map((a) => a.toJSONObject())
                 : undefined,
-            return: this.returns.toJSONObject(),
+            return: this.return.toJSONObject(),
             notes: this.notes,
         };
     }

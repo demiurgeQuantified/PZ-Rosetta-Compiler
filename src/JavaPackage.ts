@@ -4,7 +4,7 @@ import * as YAML from 'yaml';
 import * as fs from 'fs';
 import { JavaClass } from './JavaClass';
 
-export class JavaNamespace {
+export class JavaPackage {
     readonly name: string;
     readonly classes: { [name: string]: JavaClass } = {};
 

@@ -2,7 +2,7 @@
 
 import { JavaType } from './JavaType';
 
-export class JavaReturns {
+export class JavaReturn {
     readonly type: JavaType;
     notes: string | undefined;
 
