@@ -15,16 +15,24 @@ export class JavaNamespace {
     save(format: 'yml' | 'json') {
         let path = '';
         let text = '';
+
+        const packages: { [name: string]: any } = {};
+        packages[this.name] = this.toJSONObject();
+        const file = {
+            version: "1.1",
+            languages: {
+                java: {
+                    packages
+                }
+            }
+        }
+
         if (format === 'yml') {
             path = `dist/yml/`;
-            const namespaces: { [name: string]: any } = {};
-            namespaces[this.name] = this.toJSONObject();
-            text = YAML.stringify({namespaces}, null, 2);
+            text = YAML.stringify(file, null, 2);
         } else {
             path = `dist/json/`;
-            const namespaces: { [name: string]: any } = {};
-            namespaces[this.name] = this.toJSONObject();
-            text = JSON.stringify({namespaces}, null, 2);
+            text = JSON.stringify(file, null, 2);
         }
 
         let append = './';

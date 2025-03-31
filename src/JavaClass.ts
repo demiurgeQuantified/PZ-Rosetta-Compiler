@@ -181,8 +181,10 @@ export class JavaClass extends JavaElement {
     toJSONObject(): any {
         const obj: {
             fields: { [name: string]: any } | undefined;
+            staticFields: { [name: string]: any } | undefined;
             constructors: any[] | undefined;
             methods: any[] | undefined;
+            staticMethods: any[] | undefined;
             deprecated: boolean | undefined;
             modifiers: string[] | undefined;
             javaType: string;
@@ -190,8 +192,10 @@ export class JavaClass extends JavaElement {
             notes: string | undefined;
         } = {
             fields: undefined,
+            staticFields: undefined,
             constructors: undefined,
             methods: undefined,
+            staticMethods: undefined,
             modifiers: this.modifiers.length !== 0 ? this.modifiers : undefined,
             deprecated: this.deprecated ? true : undefined,
             javaType: this.javaType,
@@ -202,22 +206,43 @@ export class JavaClass extends JavaElement {
         const fieldKeys = Object.keys(this.fields);
         if (fieldKeys.length !== 0) {
             obj.fields = {};
+            obj.staticFields = {};
             fieldKeys.sort((a, b) => a.localeCompare(b));
             for (const key of fieldKeys) {
-                obj.fields[key] = this.fields[key].toJSONObject();
+                if (this.fields[key].modifiers.includes("static")) {
+                    obj.staticFields[key] = this.fields[key].toJSONObject();
+                } else {
+                    obj.fields[key] = this.fields[key].toJSONObject();
+                }
             }
-            
+
+            if (obj.fields.length < 1) {
+                obj.fields = undefined
+            } else if (obj.staticFields.length < 1) {
+                obj.staticFields = undefined
+            }
         }
 
         const methodKeys = Object.keys(this.methods);
         if (methodKeys.length !== 0) {
             obj.methods = [];
+            obj.staticMethods = [];
             methodKeys.sort((a, b) => a.localeCompare(b));
             for (const key of methodKeys) {
                 const cluster = this.methods[key];
                 for (const method of cluster) {
-                    obj.methods.push(method.toJSONObject());
+                    if (method.modifiers.includes("static")) {
+                        obj.staticMethods.push(method.toJSONObject());
+                    } else {
+                        obj.methods.push(method.toJSONObject());
+                    }
                 }
+            }
+
+            if (obj.methods.length < 1) {
+                obj.methods = undefined
+            } else if (obj.staticMethods.length < 1) {
+                obj.staticMethods = undefined
             }
         }
 

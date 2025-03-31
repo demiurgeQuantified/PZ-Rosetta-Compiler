@@ -119,7 +119,7 @@ export class JavaMethod extends JavaElement {
             parameters: this.parameters.length
                 ? this.parameters.map((a) => a.toJSONObject())
                 : undefined,
-            returns: this.returns.toJSONObject(),
+            return: this.returns.toJSONObject(),
             notes: this.notes,
         };
     }
