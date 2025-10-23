@@ -16,7 +16,9 @@ export class JavaCatalog {
         const list = root.getElementsByTagName('a');
         for (const item of list) {
             const href = item.attributes['href'];
-            if (!href.startsWith('zombie/')) continue;
+            if (href == undefined || !href.endsWith(".html")) continue;
+            const title = item.attributes['title']
+            if (title == undefined || !title.startsWith("class in")) continue;
             classList.push(href);
         }
 
