@@ -28,7 +28,7 @@ export class JavaClass extends JavaElement {
         const { element } = this;
 
         // Java Package
-        this.package = this.getText('.header > .sub-title > a')!;
+        this.package = this.getElement('.header > .sub-title > .package-label-in-type')?.parentNode.parentNode.lastChild.text!;
 
         // Java Type & Modifiers
         const split = this.getText('.type-signature > .modifiers')!.split(' ');
