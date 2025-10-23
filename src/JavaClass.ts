@@ -53,7 +53,7 @@ export class JavaClass extends JavaElement {
         }
         this.name = name;
 
-        const notes = this.getText('.class-description .block');
+        const notes = this.getElement('.class-description .block')?.parentNode.innerText;
         if (notes != undefined) {
             this.notes = removeHtmlEncoding(notes.trim());
         }
