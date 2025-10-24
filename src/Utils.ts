@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
 
+import { HTMLElement, Node, NodeType } from "node-html-parser";
+
 const RESERVED_FUNCTION_NAMES = ['toString', 'valueOf'];
 const RESERVED_WORDS = [
     'and',
@@ -40,6 +42,29 @@ export const removeHtmlEncoding = (s: string): string => {
         .replaceAll('&nbsp;', ' ');
 };
 
+export const expandTypeNames = (
+    node: Node
+): string => {
+    var fullText = ""
+
+    for (const child of node.childNodes) {
+        const htmlNode = <HTMLElement> child;
+        if (htmlNode.tagName === "A") {
+            const title = htmlNode.getAttribute("title");
+            if (title === undefined) {
+                throw new Error("Link in parameters has no title");
+            }
+            if (title.startsWith("interface in ") || title.startsWith("class in ") || title.startsWith("class or interface in ")) {
+                const packageName = title.substring(title.lastIndexOf(" ") + 1);
+                fullText = fullText + packageName + ".";
+            }
+        }
+        fullText += child.textContent.replace(".", "$");
+    }
+
+    return fullText
+}
+
 export const splitParameters = (
     paramString: string,
 ): Array<{ name: string; type: string; typeFull: string }> => {
@@ -65,7 +90,10 @@ export const splitParameters = (
         item.name = name;
         item.type = item.type
             .substring(0, item.type.length - name.length)
-            .trim();
+            .trim()
+        item.type = item.type
+            .substring(item.type.lastIndexOf(".") + 1)
+            .replace("$", ".");
         item.typeFull = item.typeFull
             .substring(0, item.typeFull.length - name.length)
             .trim();

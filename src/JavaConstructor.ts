@@ -3,7 +3,7 @@
 import { HTMLElement } from 'node-html-parser';
 import { JavaElement } from './JavaElement';
 import { JavaParameter } from './JavaParameter';
-import { removeHtmlEncoding, splitParameters } from './Utils';
+import { removeHtmlEncoding, splitParameters, expandTypeNames } from './Utils';
 
 export class JavaConstructor extends JavaElement {
     readonly modifiers: string[] = [];
@@ -23,7 +23,7 @@ export class JavaConstructor extends JavaElement {
         )?.parentNode;
 
         if (eParameters != null) {
-            const sParameters = splitParameters(eParameters.textContent);
+            const sParameters = splitParameters(expandTypeNames(eParameters));
             for (const sParameter of sParameters) {
                 // const eNotes = this.getElement('.detail > .notes > dd > code');
                 // if (eNotes != undefined) {

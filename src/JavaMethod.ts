@@ -3,7 +3,7 @@
 import { HTMLElement } from 'node-html-parser';
 import { JavaElement } from './JavaElement';
 import { JavaParameter } from './JavaParameter';
-import { removeHtmlEncoding, splitParameters } from './Utils';
+import { removeHtmlEncoding, splitParameters, expandTypeNames } from './Utils';
 import { JavaReturn } from './JavaReturn';
 import { JavaType } from './JavaType';
 
@@ -28,7 +28,7 @@ export class JavaMethod extends JavaElement {
         const eReturnType = this.getElement('.member-signature > .return-type');
         if (eReturnType == undefined)
             throw new Error('ReturnType not defined.');
-        let returnType = eReturnType.text;
+        let returnType = expandTypeNames(eReturnType.parentNode);
         const returnTypeFull = returnType;
         if (returnType.indexOf('<') !== -1) {
             returnType = returnType.split('<')[0];
@@ -40,7 +40,7 @@ export class JavaMethod extends JavaElement {
         )?.parentNode;
 
         if (eParameters != null) {
-            const sParameters = splitParameters(eParameters.textContent);
+            const sParameters = splitParameters(expandTypeNames(eParameters));
             for (const sParameter of sParameters) {
                 // const eNotes = this.getElement('.detail > .notes > dd > code');
                 // if (eNotes != undefined) {

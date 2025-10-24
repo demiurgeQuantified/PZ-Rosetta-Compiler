@@ -3,7 +3,7 @@
 import { HTMLElement } from 'node-html-parser';
 import { JavaElement } from './JavaElement';
 import { JavaType } from './JavaType';
-import { removeHtmlEncoding } from './Utils';
+import { removeHtmlEncoding, expandTypeNames } from './Utils';
 
 export class JavaField extends JavaElement {
     readonly name: string;
@@ -27,7 +27,7 @@ export class JavaField extends JavaElement {
         const eReturnType = this.getElement('.member-signature > .return-type');
         if (eReturnType == undefined) throw new Error("Return Type not defined.");
 
-        let basic = eReturnType.text;
+        let basic = expandTypeNames(eReturnType.parentNode);
         let full: string | undefined = undefined;
         if(basic.indexOf('<') !== -1) {
             full = basic;
