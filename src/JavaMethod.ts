@@ -54,7 +54,7 @@ export class JavaMethod extends JavaElement {
             }
         }
 
-        const notes = this.element.querySelector('.block')?.firstChild.text;
+        const notes = this.element.querySelector('.block')?.innerText;
         if (notes != undefined) {
             this.notes = removeHtmlEncoding(notes.trim());
         }

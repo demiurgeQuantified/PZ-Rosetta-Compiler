@@ -38,7 +38,7 @@ export class JavaConstructor extends JavaElement {
         }
 
         const notes =
-            this.element.querySelector('.block')?.firstChild.innerText;
+            this.element.querySelector('.block')?.innerText;
         if (notes != undefined) {
             this.notes = removeHtmlEncoding(notes.trim());
         }
