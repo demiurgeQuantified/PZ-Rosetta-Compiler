@@ -33,7 +33,7 @@ export class JavaCatalog {
                 }
                 this.packages[name].addClass(clazz);
                 for (var nestedClass of clazz.nestedClasses) {
-                    nestedClass = name.replaceAll(".", "/") + "/" + nestedClass + ".html"
+                    nestedClass = classURI.substring(0, classURI.lastIndexOf("/") + 1) + nestedClass + ".html"
                     if (!classList.includes(nestedClass)) {
                         classList.push(nestedClass)
                     }
