@@ -58,8 +58,10 @@ export const expandTypeNames = (
                 const packageName = title.substring(title.lastIndexOf(" ") + 1);
                 fullText = fullText + packageName + ".";
             }
+            fullText += child.textContent.replaceAll(".", "$");
+        } else {
+            fullText += child.textContent;
         }
-        fullText += child.textContent.replace(".", "$");
     }
 
     return fullText
