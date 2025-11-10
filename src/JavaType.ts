@@ -12,7 +12,7 @@ export class JavaType {
     toJSONObject(): any {
         return {
             basic: this.basic,
-            full: this.full && this.full !== this.basic ? this.full : undefined,
+            full: this.full ? this.full : undefined,
         };
     }
 }
