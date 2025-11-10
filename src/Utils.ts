@@ -67,6 +67,21 @@ export const expandTypeNames = (
     return fullText
 }
 
+export const basicTypeFromFull = (
+    full: string
+): string => {
+    const parametersStart = full.indexOf("<");
+    if (parametersStart != -1) {
+        full = full.substring(0, parametersStart);
+    }
+
+    full = full
+        .substring(full.lastIndexOf(".") + 1)
+        .replaceAll("$", ".");
+
+    return full
+}
+
 export const splitParameters = (
     paramString: string,
 ): Array<{ name: string; type: string; typeFull: string }> => {
@@ -90,15 +105,10 @@ export const splitParameters = (
         }
 
         item.name = name;
-        item.type = item.type
-            .substring(0, item.type.length - name.length)
-            .trim()
-        item.type = item.type
-            .substring(item.type.lastIndexOf(".") + 1)
-            .replace("$", ".");
         item.typeFull = item.typeFull
             .substring(0, item.typeFull.length - name.length)
             .trim();
+        item.type = basicTypeFromFull(item.typeFull);
     }
 
     let genericIndent = 0;
