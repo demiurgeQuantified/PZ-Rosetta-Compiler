@@ -54,7 +54,7 @@ export const expandTypeNames = (
             if (title === undefined) {
                 throw new Error("Link in parameters has no title");
             }
-            if (title.startsWith("interface in ") || title.startsWith("class in ") || title.startsWith("class or interface in ")) {
+            if (title.includes("interface in ") || title.includes("class in ")) {
                 const packageName = title.substring(title.lastIndexOf(" ") + 1);
                 fullText = fullText + packageName + ".";
             }
