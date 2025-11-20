@@ -18,7 +18,7 @@ export class JavaCatalog {
             const href = item.attributes['href'];
             if (href == undefined || !href.endsWith(".html")) continue;
             const title = item.attributes['title']
-            if (title == undefined || !title.startsWith("class in")) continue;
+            if (title == undefined || !(title.includes("interface in ") || title.includes("class in "))) continue;
             classList.push(href);
         }
 
