@@ -16,7 +16,7 @@ export class JavaCatalog {
         const list = root.getElementsByTagName('a');
         for (const item of list) {
             const href = item.attributes['href'];
-            if (href == undefined || !href.endsWith(".html")) continue;
+            if (href == undefined || !href.endsWith(".html") || href.startsWith("https://")) continue;
             const title = item.attributes['title']
             if (title == undefined || !(title.includes("interface in ") || title.includes("class in "))) continue;
             classList.push(href);
@@ -33,10 +33,6 @@ export class JavaCatalog {
                 }
                 this.packages[name].addClass(clazz);
                 for (var nestedClass of clazz.nestedClasses) {
-                    // TODO: fix these getting in here in the first place
-                    if (nestedClass.startsWith("https://")) {
-                        continue;
-                    }
                     nestedClass = classURI.substring(0, classURI.lastIndexOf("/") + 1) + nestedClass + ".html"
                     if (!classList.includes(nestedClass)) {
                         classList.push(nestedClass)
